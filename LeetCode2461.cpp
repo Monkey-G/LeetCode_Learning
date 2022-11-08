@@ -73,3 +73,50 @@ public:
         return ans;
     }
 };
+
+//神级网友的神仙解
+using LL = long long;
+
+#define ALL(v) v.begin(), v.end()
+#define ALLR(v) v.rbegin(), v.rend()
+#define REP(i, n) for (LL i = 0; i < n; ++i)
+#define REPR(i, n) for (LL i = n; i >= 0; --i)
+#define FOR(i, m, n) for (LL i = m; i < n; ++i)
+#define FORR(i, m, n) for (LL i = m; i >= n; --i)
+#define pb push_back
+#define PI (acos(-1))
+
+constexpr auto EPS = 1E-8;
+constexpr auto MOD = 1000000007LL;
+constexpr auto inf = 0x3f3f3f3f;
+
+int __FAST_IO__ = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    return 0;
+}();
+
+int vis[100'005]{0};
+
+class Solution04 {
+public:
+    long long maximumSubarraySum(vector<int>& nums, int k) {
+        int n = nums.size();
+        LL sum = 0, res = 0;
+        for (auto& v : nums) vis[v] = 0;
+        for (int i = 0, j = 0; i < n; ++i) {
+            if (++vis[nums[i]] == 1) ++j;
+            sum += nums[i];
+            if (i >= k) {
+                sum -= nums[i - k];
+                if (--vis[nums[i - k]] == 0) {
+                    --j;
+                }
+                
+            }
+            if (j == k) res = max(res, sum);
+
+        }
+        return res;
+    }
+};
