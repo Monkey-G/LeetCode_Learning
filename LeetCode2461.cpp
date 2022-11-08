@@ -53,3 +53,23 @@ public:
         return res;
     }
 };
+
+class Solution03 {//参考网友解改进的自己的解，注意sum的计算一定不要每次都重新来而是滑动进行，以减少计算规模
+public:
+    long long maximumSubarraySum(vector<int>& nums, int k) {
+        //这是一个显然的滑动窗口的问题，而且由于不能重复数，那就意味着有查表的需要，如果是使用vector索引必须从头起效率很低，因此该用哈希表
+        int n = nums.size();
+        unordered_map<int, int> nums_map;//哈希表
+        long long ans = 0, sum = 0;
+        int l = 0, r = 0;//滑动窗口的左右端索引
+
+        while (r < n){
+            if (l > n-k) break;//左索引大于n-k时，子数列长度一定不足k
+            sum += nums[r]; ++nums_map[nums[r]];
+            while (nums_map[nums[r]] > 1 || r-l+1 > k) {sum -= nums[l]; --nums_map[nums[l++]];}//若出现重复数或者长度超限就滑动左窗口，将重复数消出去
+            if (r-l+1 == k) ans = max(ans, sum);
+            ++r;
+        }
+        return ans;
+    }
+};
