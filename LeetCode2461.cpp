@@ -84,12 +84,17 @@ using LL = long long;
 #define FOR(i, m, n) for (LL i = m; i < n; ++i)
 #define FORR(i, m, n) for (LL i = m; i >= n; --i)
 #define pb push_back
+//acos()反余弦函数
 #define PI (acos(-1))
 
+//constexpr 关键字的功能是使指定的常量表达式获得在程序编译阶段计算出结果的能力，而不必等到程序运行阶段。
+//C++ 11 标准中，constexpr 可用于修饰普通变量、函数（包括模板函数）以及类的构造函数。
+//这段我不懂啊，呜呜呜呜
 constexpr auto EPS = 1E-8;
 constexpr auto MOD = 1000000007LL;
 constexpr auto inf = 0x3f3f3f3f;
 
+//加速
 int __FAST_IO__ = []() {
     ios::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
