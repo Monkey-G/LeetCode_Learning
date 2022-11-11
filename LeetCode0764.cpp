@@ -58,7 +58,7 @@ private:
 };
 
 
-//自己写的傻逼超时解，我估计是不能跑的
+//自己写的傻逼超时解
 struct hash_pair { 
     template <class T1, class T2> 
     size_t operator()(const pair<T1, T2>& p) const
@@ -90,6 +90,7 @@ public:
                 widen(qu.front(), n);
                 qu.pop();
             }
+            ++cnt;
         }
         return ans;
     }
