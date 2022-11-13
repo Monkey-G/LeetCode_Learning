@@ -118,12 +118,13 @@ int __FAST_IO__ = []() {
     return 0;
 }();
 
-class Solution04 {//根据网友思路做的自己的解，目前优化最好
+class Solution {
 public:
     int subarrayLCM(vector<int>& nums, int k) {
         int n = nums.size();
         int ans = 0;
         FOR(i, 0, n) {//i为滑动窗口的起点，j为滑动窗口的终点
+            if (k % nums[i]) continue;
             int subnum_mincomul = nums[i];
             FOR(j, i, n) {
                 subnum_mincomul = find_mincomul(subnum_mincomul, nums[j]); 
