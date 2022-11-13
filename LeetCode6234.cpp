@@ -90,7 +90,7 @@ private:
     }
 };
 
-class Solution03 {//这个网友的思路很好，直接滑动窗口求最小公约数直至子数列都满足情况，其实和自己的思路差不多，但我的太过于复杂而且优化太差
+class Solution03 {//网友的思路很好，直接滑动窗口求最小公约数直至子数列都满足情况，其实和自己的思路差不多，但我的太过于复杂而且优化太差（主要是多了一些毫无意义的低效循环）
 public:
     int subarrayLCM(vector<int>& nums, int k) {
         int n = nums.size();
