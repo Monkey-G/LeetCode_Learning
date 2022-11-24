@@ -46,3 +46,56 @@ int __FAST_IO__ = []() {
     cin.tie(0); cout.tie(0);
     return 0;
 }();
+
+
+
+#define FOR(i, n) for (int i = 0; i < n; ++i)
+
+class Solution02 {//官方一次遍历解
+public:
+    int numSubarrayBoundedMax(vector<int>& nums, int left, int right) {
+        int res = 0, last2 = -1, last1 = -1;
+        FOR (i, nums.size()) {
+            if (nums[i] >= left && nums[i] <= right) {
+                last1 = i;
+            } else if (nums[i] > right) {
+                last2 = i;
+                last1 = -1;
+            }
+            if (last1 != -1) {
+                res += last1 - last2;
+            }
+        }
+        return res;
+    }
+};
+
+
+int __FAST_IO__ = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    return 0;
+}();
+
+
+class Solution03 {//官方计数解
+public:
+    int numSubarrayBoundedMax(vector<int>& nums, int left, int right) {
+        return count(nums, right) - count(nums, left - 1);
+    }
+
+    int count(vector<int>& nums, int lower) {
+        int res = 0, cur = 0;
+        for (auto x : nums) {
+            cur = x <= lower ? cur + 1 : 0;
+            res += cur;
+        }
+        return res;
+    }
+};
+
+int __FAST_IO__ = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    return 0;
+}();
