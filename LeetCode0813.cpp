@@ -43,11 +43,13 @@ private:
 };
 
 
-class Solution01 {//网友解
+#define FOR(i, m, n) for (int i = m; i < n; ++i)
+
+class Solution02 {//网友解
 public:
     
 double prolsoa(vector<int>& nums, int k, int index, vector<vector<double>>& dp) {
-    if (dp[index][k] != -1) {
+    if (dp[index][k] != -1) {//算过了
         return dp[index][k];
     }
     if (index == nums.size()) {
@@ -66,13 +68,19 @@ double prolsoa(vector<int>& nums, int k, int index, vector<vector<double>>& dp) 
         sum /= (i + 1 - index);
         val = max(val, prolsoa(nums, k - 1, i + 1,dp)+sum);
         sum = tmp;
-    }
+    }//求出dp[index][k]
     dp[index][k] = val;
     return val;
 }
 
 double largestSumOfAverages(vector<int> nums, int k) {
     vector<vector<double>> dp(nums.size() + 1, vector<double>(k + 1, -1));
+    /*FOR (j, 0, k+1) {
+        FOR(i, 0, nums.size()+1) {//i<j没有意义
+            cout << dp[i][j] << " ";
+        }
+        cout << endl;
+    }*/
     return prolsoa(nums, k, 0,dp);
 }
 };
