@@ -187,3 +187,61 @@ public:
         while (index < n) { if (index != vi) move(vi, index, grid, n, step); ++index; }
     }
 };
+
+
+class Solution03 {//官方解
+public:
+    //连线向量转换函数，由于任意不是u->v的情况都不可能与u*n+v相同，这样就可以把一个有指向性的向量转换为一个标量来用作哈希表的key
+    int encode(int u, int v, int n) {
+        return u * n + v;
+    }
+
+    int reachableNodes(vector<vector<int>>& edges, int maxMoves, int n) {
+        //adList[i]意味着点i的邻接表，这一邻接表储存着与点i邻接的每一个点的信息，这一邻接表的每一个元素是一个pair，
+        //这个pair的前一个数为两点的距离（用连点数量来表示），后一个数为与点i邻接的点序号
+        vector<vector<pair<int, int>>> adList(n);
+        for (auto &edge : edges) {
+            int u = edge[0], v = edge[1], nodes = edge[2];
+            adList[u].emplace_back(v, nodes);
+            adList[v].emplace_back(u, nodes);
+        }
+
+        unordered_map<int, int> used;//用来储存每个连线上可以到达的连点数量情况，key为u->v向量通过encode函数转换为的标量
+        unordered_set<int> visited;//用来储存已经遍历过的点
+        int reachableNodes = 0;//可以到达的节点数
+        //pq为一个堆栈，每次取出pq的一个数就找出该点的所有未遍历邻接点再按路径大小从小到大放进pq
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        pq.emplace(0, 0);//先把0点即起点存进pq
+        while (!pq.empty() && pq.top().first <= maxMoves) {//从0点出发其他点都不能到达，或者存在不能到达的点
+            auto [step, u] = pq.top();//从pq的栈顶取出pair，
+            pq.pop();//这个点在遍历中，从pq中删除
+            if (visited.count(u)) {//u点已经记录过了
+                continue;
+            }
+            visited.emplace(u);//把u点加进visited中，避免重复计算
+            reachableNodes++;//可到达的节点加一
+            for (auto [v, nodes] : adList[u]) {//遍历所有与u点邻接的点
+                //nodes为u、v两点的连点数，step为u点与起点的距离，+1是为了考虑v点，将v点加入pq的前提是v未遍历过
+                if (nodes + step + 1 <= maxMoves && !visited.count(v)) {
+                    pq.emplace(nodes + step + 1, v);//v与起点距离为nodes + step + 1
+                }
+                //encode(u, v, n)对应的value为这条边上可以到达的连点数
+                used[encode(u, v, n)] = min(nodes, maxMoves - step);
+            }
+        }
+
+        //由于used储存的向量是成对存在的，即u->v和v->u，那就意味着两个向量所记录的可到达连点数可能是存在重叠的
+        for (auto &edge : edges) {
+            int u = edge[0], v = edge[1], nodes = edge[2];
+            reachableNodes += min(nodes, used[encode(u, v, n)] + used[encode(v, u, n)]);//消除重叠情况
+        }
+        return reachableNodes;
+    }
+};
+
+//加速
+int __FAST_IO__ = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    return 0;
+}();
