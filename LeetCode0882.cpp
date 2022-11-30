@@ -245,3 +245,62 @@ int __FAST_IO__ = []() {
     cin.tie(0); cout.tie(0);
     return 0;
 }();
+
+
+using LL = long long;
+
+#define ALL(v) v.begin(), v.end()
+#define ALLR(v) v.rbegin(), v.rend()
+#define REP(i, n) for (LL i = 0; i < n; ++i)
+#define REPR(i, n) for (LL i = n; i >= 0; --i)
+#define FOR(i, m, n) for (LL i = m; i < n; ++i)
+#define FORR(i, m, n) for (LL i = m; i >= n; --i)
+#define pb push_back
+#define PI (acos(-1))
+
+constexpr auto EPS = 1E-8;
+constexpr auto MOD = 1000000007LL;
+constexpr auto inf = 0x3f3f3f3f;
+
+int __FAST_IO__ = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    return 0;
+}();
+
+int dis[3'001], h[3'001], u[20'001], v[20'001], w[20'001];
+bool vis[3'001];
+
+class Solution04 {//网友的神级代码
+public:
+    int reachableNodes(vector<vector<int>>& edges, int maxMoves, int n) {
+        memset(h, 0, n << 2);
+        memset(dis, inf, n << 2);
+        memset(vis, 0, n);
+
+        int top = 1;
+        for (vector<int>& e : edges) {
+            u[top] = e[1]; v[top] = h[e[0]]; w[top] = e[2] + 1; h[e[0]] = top++;
+            u[top] = e[0]; v[top] = h[e[1]]; w[top] = e[2] + 1; h[e[1]] = top++;
+        }
+
+        dis[0] = 0;
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;
+        pq.push({0, 0});
+        REP(t, n) {
+            while (!pq.empty() && vis[pq.top().second]) pq.pop();
+            auto [y, x] = pq.top(); vis[x] = true;
+            for (int idx = h[x]; idx; idx = v[idx])
+                if (!vis[u[idx]] && dis[u[idx]] > y + w[idx])
+                    pq.push({dis[u[idx]] = y + w[idx], u[idx]});
+        }
+
+        int res = 0;
+        REP(i, n) if (dis[i] <= maxMoves) ++res;
+        for (vector<int>& e : edges) {
+            res += min(max(maxMoves - dis[e[0]], 0) + max(maxMoves - dis[e[1]], 0), e[2]);
+        }
+        
+        return res;
+    }
+};
