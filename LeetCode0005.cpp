@@ -7,7 +7,7 @@ int __FAST_IO__ = []() {
     return 0;
 }();
 
-class Solution01 {//最终参考官方解自己写的解
+class Solution03 {//最终参考官方解自己写的解
 public:
     string longestPalindrome(string s) {
         int n = s.size();
@@ -36,5 +36,34 @@ public:
         }*/
 
         return s.substr(begin_index, length);
+    }
+};
+
+
+
+
+class Solution04 {//网友的神级解
+public:
+    string longestPalindrome(string s) {
+         if (s.empty()) return "";
+        if (s.size() == 1) return s;
+        int len = s.size(), start = 0, maxLength = 1, left, right;
+        for (unsigned int i = 0; i < len && len - i > maxLength / 2;) 
+        {
+            left = right = i;
+            while (right < len - 1 && s[right + 1] == s[right]) ++right;
+            i = right + 1;
+            while (right < len - 1 && left > 0 && s[right + 1] == s[left - 1]) 
+            {
+                ++right;
+                --left;
+            }
+            if (maxLength < right - left + 1) 
+            {
+                start = left;
+                maxLength = right - left + 1;
+            }
+        }
+        return s.substr(start, maxLength);
     }
 };
