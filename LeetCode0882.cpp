@@ -260,7 +260,7 @@ using LL = long long;
 
 constexpr auto EPS = 1E-8;
 constexpr auto MOD = 1000000007LL;
-constexpr auto inf = 0x3f3f3f3f;
+constexpr auto inf = 0x3f3f3f3f;//inf > 1e9
 
 int __FAST_IO__ = []() {
     ios::sync_with_stdio(0);
@@ -268,18 +268,22 @@ int __FAST_IO__ = []() {
     return 0;
 }();
 
+//3'001和3001是等价的
+//由于1 <= n <= 3000
+//dis[3'001]储存每一点与起点的距离，h[3'001]储存每个点与其相连的点数量，
+//u储存每个向量和他反向量的起点，v为，w储存每个向量和他的反向量的长度（含终点）
 int dis[3'001], h[3'001], u[20'001], v[20'001], w[20'001];
-bool vis[3'001];
+bool vis[3'001];//储存每一点是否已经遍历过，某点已经遍历过就把相应位染为1
 
-class Solution04 {//网友的神级代码
+class Solution04 {//网友神级解
 public:
     int reachableNodes(vector<vector<int>>& edges, int maxMoves, int n) {
+        //n << 2是因为int为4字节长度的数据类型，所以占用的内存空间为4n，而memset是对内存空间进行操作的
         memset(h, 0, n << 2);
         memset(dis, inf, n << 2);
         memset(vis, 0, n);
-
         int top = 1;
-        for (vector<int>& e : edges) {
+        for (vector<int>& e : edges) {//把每个向量和他对应的反向量的起点存进e中，终点对应的h存进v该起点对应终点距离（含终点）存进w
             u[top] = e[1]; v[top] = h[e[0]]; w[top] = e[2] + 1; h[e[0]] = top++;
             u[top] = e[0]; v[top] = h[e[1]]; w[top] = e[2] + 1; h[e[1]] = top++;
         }
