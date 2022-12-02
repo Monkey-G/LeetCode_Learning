@@ -367,7 +367,7 @@ struct Info{
 };
 vector<Info> info[N];
 vector<int> row[N],col[N],tmp[N];
-class Solution07 {
+class Solution07 {//位运算
 public:
 	int orderOfLargestPlusSign(int n, vector<vector<int>>& a) {
 		int m=a.size(),ans=0;
