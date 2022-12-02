@@ -418,3 +418,63 @@ int _IO=[](){
 	cin.tie(0); //cout.tie(0);
 	return 0;
 }();
+
+
+
+const int N = 510;
+int cntrow[N][N],cntcol[N][N];
+int idr[N];
+int idc[N];
+class Solution08 {//网友的位操作神解
+public:
+    int orderOfLargestPlusSign(int n, vector<vector<int>>& mines) {
+        for(int i = 0;i < n;i++)
+        {
+            idc[i] = idr[i] = 1;
+            cntcol[i][0] = cntrow[i][0] = -1;
+        }
+        int m = mines.size();
+        for(int i = 0;i < m;i++)
+        {
+            int x = mines[i][0],y = mines[i][1];
+            cntrow[x][idr[x]] = y;
+            cntcol[y][idc[y]] = x;
+            idr[x]++;
+            idc[y]++;
+        }
+        for(int i = 0;i < n;i++)
+        {
+            sort(cntrow[i],cntrow[i] + idr[i]);
+            sort(cntcol[i],cntcol[i] + idc[i]);
+            cntcol[i][idc[i]] = cntrow[i][idr[i]] = n;
+        }
+        int ans = 0;
+        int base = n / 2;
+        for(int s = 1;s <= n;s++)
+        {
+            int di = s / 2 * (s % 2 ? 1 : -1);
+            int i = base + di;
+            int pre = min(i + 1,n - i);
+            if(pre <= ans)continue;
+            for(int j = 1;j <= idc[i];j++)
+            {
+                int low = cntcol[i][j - 1],high = cntcol[i][j];
+                for(int k = low + ans + 1;k < high - ans;k++)
+                {
+                    int len = min(k - low,high - k);
+                    int l = 0,r = idr[k];
+                    while(l < r)
+                    {
+                        int mid = l + r + 1 >> 1;
+                        if(cntrow[k][mid] < i)l = mid;
+                        else r = mid - 1;
+                    }
+                    len = min(len,i - cntrow[k][l]);
+                    len = min(len,cntrow[k][l + 1] - i);
+                    ans = max(ans,len);
+                }
+            }
+        }
+        return ans;
+    }
+};
