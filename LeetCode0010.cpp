@@ -47,3 +47,44 @@ public:
         return dq[m][n];
     }
 };
+
+
+
+
+class Solution02 {//简单递归
+public:
+    bool isMatch(string s, string p) {
+        if (p.empty()) return s.empty();
+        
+        auto first_match = !s.empty() && (s[0] == p[0] || p[0] == '.');
+        
+        if (p.length() >= 2 && p[1] == '*') {
+            return isMatch(s, p.substr(2)) || (first_match && isMatch(s.substr(1), p));
+        } else {
+            return first_match && isMatch(s.substr(1), p.substr(1));
+        }
+    }
+};
+
+
+
+
+class Solution03 {//优化递归
+public:
+    bool isMatch(string s, string p) {
+        return isMatch(s.c_str(), p.c_str());
+    }
+    
+    bool isMatch(const char* s, const char* p) {
+        if(*p == 0) return *s == 0;
+        
+        auto first_match = *s && (*s == *p || *p == '.');
+        
+        if(*(p+1) == '*'){
+            return isMatch(s, p+2) || (first_match && isMatch(++s, p));
+        }
+        else{
+            return first_match && isMatch(++s, ++p);
+        }
+    }
+};
