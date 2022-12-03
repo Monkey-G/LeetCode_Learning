@@ -69,7 +69,7 @@ public:
 
 
 
-class Solution03 {//优化递归
+class Solution03 {//优化递归，这个比上一个更优的主要原因是用了指针，直接访问内存减少了大量没必要的复制行为
 public:
     bool isMatch(string s, string p) {
         return isMatch(s.c_str(), p.c_str());
