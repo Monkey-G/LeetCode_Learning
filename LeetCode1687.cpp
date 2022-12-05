@@ -56,7 +56,7 @@ int __FAST_IO__ = []() {
     return 0;
 }();
 
-class Solution02 {// 官方的动态规划加单调栈
+class Solution02 {// 官方的动态规划加单调栈，本质上是把一个双层的动态规划问题替代为了一个单调栈的维护，使得时间复杂度降低了一个维度
 public:
     int boxDelivering(vector<vector<int>>& boxes, int portsCount, int maxBoxes, int maxWeight) {
         int n = boxes.size();
