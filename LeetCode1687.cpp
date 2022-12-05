@@ -101,3 +101,33 @@ int __FAST_IO__ = []() {
     cin.tie(0); cout.tie(0);
     return 0;
 }();
+
+
+
+// https://space.bilibili.com/206214
+int init = []() {
+    cin.tie(nullptr)->sync_with_stdio(false);
+    return 0;
+}();
+
+#define FOR(i, m, n) for (int i = m; i < n; ++i)
+
+class Solution03 {//一个更加不错的思路
+public:
+    int boxDelivering(vector<vector<int>> &boxes, int _, int maxBoxes, int maxWeight) {
+        int n = boxes.size(), f[n + 1];
+        memset(f, 0, sizeof(f));
+        f[1] = 2;
+        int left = 0, weight_sum = boxes[0][1], diff_sum = 2;
+        FOR(i, 1, n) {
+            weight_sum += boxes[i][1];
+            if (boxes[i][0] != boxes[i - 1][0]) ++diff_sum;
+            while (weight_sum > maxWeight || i - left + 1 > maxBoxes || f[left] == f[left + 1]) {
+                weight_sum -= boxes[left++][1];
+                if (boxes[left][0] != boxes[left - 1][0]) --diff_sum;
+            }
+            f[i + 1] = f[left] + diff_sum;
+        }
+        return f[n];
+    }
+};
