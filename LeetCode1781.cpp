@@ -50,7 +50,7 @@ public:
 };
 
 
-class Solution03 {//网友神解
+class Solution03 {//网友神解，本质上还是暴力解
 public:
     int beautySum(string s) {
         short length = s.length();
