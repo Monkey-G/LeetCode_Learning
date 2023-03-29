@@ -1,0 +1,18 @@
+constexpr int mode = 1e9+7;
+
+class Solution {
+public:
+    int fib(int n) {
+        static vector<int> fib_cnt;
+        int m = fib_cnt.size();
+        if (n > m-1) {
+            while (fib_cnt.size() != n+1) {
+                int size = fib_cnt.size();
+                if (size == 0) {fib_cnt.push_back(0); continue;}
+                if (size == 1) {fib_cnt.push_back(1); continue;}
+                fib_cnt.push_back((fib_cnt[size-1] + fib_cnt[size-2]) % mode);
+            }
+        } 
+        return fib_cnt[n];
+    }
+};
