@@ -1,0 +1,16 @@
+class Solution {
+public:
+	int findRepeatNumber(vector<int>& nums) {
+		int length = nums.size();
+		vector<bool> isExit(length, false);
+		for (int i = 0; i < length; i++)
+		{
+			if (isExit[nums[i]])
+			{
+				return nums[i];
+			}
+			isExit[nums[i]] = true;
+		}
+		return nums[0];
+	}
+};
