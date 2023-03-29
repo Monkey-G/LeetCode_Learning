@@ -1,0 +1,70 @@
+//经典回溯，一定要注意回溯问题在dfs时，同一层寻址不同路径的cnt不能互相影响，要有复位操作
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        bool res = false;
+        int m = board.size(), n = board[0].size();
+        int size = word.size();
+        int index = 0;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (board[i][j] == word[index]) {
+                    vector<vector<int>> cnt(m, vector<int>(n, 0));
+                    ++cnt[i][j];
+                    index = FindTheWord(i, j, board, word, index, cnt);
+                    if (index == size-1) {res = true; break;}
+                    index = 0;
+                }
+            }
+        }
+        return res;
+    }
+private:
+    //一定要注意在使用cnt时，避免同一层寻址时不同路径的cnt不能互相影响，要有复位操作
+    int FindTheWord (const int& i, const int& j, const vector<vector<char>>& board, const string& word, const int& index,
+    vector<vector<int>>& cnt) {
+        if (index == word.size()-1) return index;
+        char find_ch = word[index+1];
+        int index1 = index, index2 = index, index3 = index, index4 = index;
+        if (i > 0){
+            if (cnt[i-1][j] == 0 && board[i-1][j] == find_ch) {
+                ++index1;
+                ++cnt[i-1][j];
+                index1 = FindTheWord(i-1, j, board, word, index1, cnt);
+                --cnt[i-1][j];//复位操作
+            }
+        }
+        if (i < board.size()-1){
+            if (cnt[i+1][j] == 0 && board[i+1][j] == find_ch) {
+                ++index2;
+                ++cnt[i+1][j];
+                index2 = FindTheWord(i+1, j, board, word, index2, cnt);
+                --cnt[i+1][j];//复位操作
+            }
+        }
+        if (j > 0){
+            if (cnt[i][j-1] == 0 && board[i][j-1] == find_ch) {
+                ++index3;
+                ++cnt[i][j-1];
+                index3 = FindTheWord(i, j-1, board, word, index3, cnt);
+                --cnt[i][j-1];//复位操作
+            }
+        }
+        if (j < board[0].size()-1){
+            if (cnt[i][j+1] == 0 && board[i][j+1] == find_ch) {
+                ++index4;
+                ++cnt[i][j+1];
+                index4 = FindTheWord(i, j+1, board, word, index4, cnt);
+                --cnt[i][j+1];//复位操作
+            }
+        }
+        return max_index(index1, index2, index3, index4);
+    }
+
+    int max_index (const int index1, const int index2, const int index3, const int index4) {
+        int res = max(index1, index2);
+        res = max(res, index3);
+        res = max(res, index4);
+        return res;
+    }
+};
