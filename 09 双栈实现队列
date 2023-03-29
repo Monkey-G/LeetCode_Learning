@@ -1,0 +1,68 @@
+//笨方法，每次输入值都要更新两个栈
+class CQueue01 {
+public:
+    CQueue() {
+
+    }
+    
+    void appendTail(int value) {
+        while (!st2.empty()) {
+            st1.push(st2.top());
+            st2.pop();
+        }
+        st1.push(value);
+        while (!st1.empty()) {
+            st2.push(st1.top());
+            st1.pop();
+        }
+    }
+    
+    int deleteHead() {
+        if (st2.empty()) return -1;
+        int res = st2.top();
+        st2.pop();
+        return res;
+    }
+
+private:
+    stack<int> st1;
+    stack<int> st2;
+};
+
+/**
+ * Your CQueue object will be instantiated and called as such:
+ * CQueue* obj = new CQueue();
+ * obj->appendTail(value);
+ * int param_2 = obj->deleteHead();
+ */
+ 
+ 
+ 
+//好一点的办法，主要是栈的更新放在了取值时st2空时一下子更新两个栈，减少了更新频率
+class CQueue02 {
+public:
+    CQueue() {
+
+    }
+    
+    void appendTail(int value) {
+        st1.push(value);
+    }
+    
+    int deleteHead() {
+        if (st2.empty()) {
+            if (st1.empty()) return -1;
+            while (!st1.empty()) {
+                st2.push(st1.top());
+                st1.pop();
+            }
+        }
+        int res = st2.top();
+        st2.pop();
+        return res;
+    }
+
+private:
+    stack<int> st1;
+    stack<int> st2;
+};
