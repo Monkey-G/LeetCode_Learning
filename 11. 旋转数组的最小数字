@@ -1,0 +1,21 @@
+class Solution01 {
+public:
+    int minArray(vector<int>& numbers) {
+        int n = numbers.size();
+        if (numbers[0] < numbers[n-1]) return numbers[0];
+        return FindMinArray(numbers, 0, n-1);
+    }
+
+    int FindMinArray(const vector<int>& numbers, const int& left, const int& right) {
+        int k = right - left;
+        if (k == 0) return numbers[left];
+        if (k == 1) return min(numbers[left], numbers[right]);
+        
+        if (numbers[left + k/2] > numbers[left]) return FindMinArray(numbers, left + k/2, right);
+        else {
+            if (numbers[left + k/2] < numbers[left]) return FindMinArray(numbers, left, left + k/2);
+            else
+            return min(FindMinArray(numbers, left + k/2, right), FindMinArray(numbers, left, left + k/2));
+        }
+    }
+};
