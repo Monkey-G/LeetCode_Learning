@@ -1,0 +1,83 @@
+class Solution01 {
+public:
+    bool findNumberIn2DArray(vector<vector<int>>& matrix, int target) {
+        bool res = false;
+        int n = matrix.size();
+        if (n == 0) return res;
+        int m = matrix[0].size();
+        if (m == 0) return res;
+        int start_i = 0, end_i = n-1;
+        while (!res && start_i < n) {
+            if (matrix[start_i][m-1] < target) ++start_i;
+            else {
+                if (matrix[start_i][m-1] == target) res = true;
+                break;
+            }
+        }
+        while (!res && end_i >= 0) {
+            if (matrix[end_i][0] > target) --end_i;
+            else {
+                if (matrix[end_i][0] == target) res = true;
+                break;
+            }
+        }
+
+        int start_j = 0, end_j = m-1;
+        while (!res && start_j < m) {
+            if (matrix[n-1][start_j] < target) ++start_j;
+            else {
+                if (matrix[n-1][start_j] == target)  res = true;
+                break;
+            }
+        }
+        while (!res && end_j >= 0) {
+            if (matrix[0][end_j] > target) --end_j;
+            else {
+                if (matrix[0][end_j] == target)  res = true;
+                break;
+            }
+        }
+
+        //cout << start_i << " " << end_i << " " << start_j << " " << end_j << endl;
+
+        if (start_i <= end_i && start_j <= end_j) {
+            for (int i = start_i; i <= end_i; ++i) {
+                for (int j = start_j; j <= end_j; ++j) {
+                    if (matrix[i][j] == target) {res = true; break;}
+                }
+            }
+        }
+
+        return res;
+    }
+};
+
+
+//网友解，其实我觉得这个可能有问题
+class Solution02 {
+public:
+    bool findNumberIn2DArray(vector<vector<int>>& matrix, int target) {
+        if(matrix.size()==0) return false;              //matrix输入为[]
+        int rows=matrix.size(),columns=matrix[0].size();
+        // cout<<rows<<columns;
+        // bool found=false;
+        if(rows>0&&columns>0){
+            // return false;
+        // }else{
+            int row=0,column=columns-1;                 //定位在右上角
+            while(row<rows&&column>=0){
+                if(matrix[row][column]==target){          //找到目标
+                    return true;
+                    break;
+                }else if(matrix[row][column]>target){        //目标小于当前位置的值
+                    --column;
+                }else{                      //目标大于当前位置的值
+                    ++row;
+                }
+            }
+            // cout<<row<<' '<<column;
+        }
+        return false;
+
+    }
+};
