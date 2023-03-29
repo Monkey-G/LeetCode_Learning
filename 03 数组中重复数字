@@ -1,4 +1,17 @@
-class Solution {
+class Solution01 {
+public:
+    int findRepeatNumber(vector<int>& nums) {
+        int res = -1;
+        unordered_map<int, int> cnt;
+        for (auto& num : nums) {
+            if (cnt[num] == 1) {res = num; break;}
+            else ++cnt[num];
+        }
+        return res;
+    }
+};
+
+class Solution02 {
 public:
 	int findRepeatNumber(vector<int>& nums) {
 		int length = nums.size();
