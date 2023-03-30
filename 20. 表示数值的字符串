@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool isNumber(string s) {
+        int n  = s.size();
+        int left = 0, right = n-1;
+        while (s[left] == ' ' && left < n) ++left;
+        if (left == n) return false;
+        while (s[right] == ' ' && right >= left) --right;
+        if (islower(s[left]) || isupper(s[left])) return false;
+
+        //cout << left << " " << right << endl;
+        bool res = false;
+        bool flag_point = false;
+        bool flag_e = false;
+        bool flag_sign = false;
+        for (int i = left; i <= right; ++i) {
+            /*cout << i << " " << s[i] << endl;
+            if (res) cout << "1" << endl;
+            else cout << "0" << endl;*/
+            if (s[i] == ' ') return false;
+            if ((islower(s[i]) || isupper(s[i])) && (s[i] != 'e' && s[i] != 'E')) return false;
+            if (s[i] == 'e' || s[i] == 'E') {
+                if (flag_e || !res) return false;
+                else {flag_e = true; flag_sign = false; res = false;}
+            }
+            if (s[i] == '+' || s[i] == '-') {
+                if (flag_sign || res || (flag_point && !flag_e)) return false;
+                else {flag_sign = true;}
+            }
+            if (s[i] == '.') {
+                if (flag_point || flag_e) return false;
+                else {flag_point = true;}
+            }
+            if (s[i] - '0' >= 0 && s[i] - '0' < 10) res = true;
+        }
+        return res;
+    }
+};
